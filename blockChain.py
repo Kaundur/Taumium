@@ -25,3 +25,4 @@ class BlockChain:
             'recipient': recipient,
             'amount': amount
         })
+        return len(self.chain)
