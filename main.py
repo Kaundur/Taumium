@@ -6,13 +6,16 @@ app = flask.Flask(__name__)
 
 blockchain = blockChain.BlockChain()
 
+
 @app.route('/')
 def index():
     return '(τ) Taumium'
 
+
 @app.route('/wallet/send')
 def wallet_send():
     return flask.send_from_directory('wallet', 'send.html')
+
 
 @app.route('/transaction/new', methods=['POST'])
 def new_transaction():
