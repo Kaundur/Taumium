@@ -6,7 +6,8 @@
 ```
 #### An experiment in cryptocurrency
 
-##Endpoints 
+##Endpoints
+ 
 ###Wallet
 * /wallet/send - HTML to send currency on the chain
 
