@@ -26,3 +26,10 @@ class BlockChain:
             'amount': amount
         })
         return len(self.chain)
+
+    def total_amount(self):
+        amount = 0
+        for t in self.transactions:
+            amount += int(t['amount'])
+
+        return amount

@@ -31,6 +31,9 @@ def new_transaction():
     response = {'message': 'Transaction will be added to <Block %s>' % block_index}
     return flask.jsonify(response), 201
 
+@app.route('/transaction/total')
+def total_amount():
+    return str(blockchain.total_amount())
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
