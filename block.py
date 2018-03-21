@@ -39,6 +39,7 @@ class Block:
         last_proof = self.proof
         last_hash = self.previous_hash
 
+        # Simple proof of work algorithm
         proof = 0
         while not self.valid_proof(last_proof, proof, last_hash):
             proof += 1
@@ -47,7 +48,6 @@ class Block:
 
     @staticmethod
     def valid_proof(last_proof, proof, last_hash):
-        # Simple proof of work algorithm
         guess = f'{last_proof}{proof}{last_hash}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == '0000'

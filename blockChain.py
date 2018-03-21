@@ -1,4 +1,5 @@
 import block
+import transaction
 
 
 class BlockChain:
@@ -20,11 +21,7 @@ class BlockChain:
         print(self.last_block())
 
     def add_transaction(self, sender, recipient, amount):
-        self.transactions.append({
-            'sender': sender,
-            'recipient': recipient,
-            'amount': amount
-        })
+        self.transactions.append(transaction.Transaction(sender, recipient, amount))
         return len(self.chain)
 
     def mine_latest_block(self):
@@ -52,3 +49,6 @@ class BlockChain:
     def calculate_mining_reward_amount(self):
         # For now return 1, later this should scale to the size of the chain
         return 1
+
+    def pending_transactions(self):
+        return self.transactions
