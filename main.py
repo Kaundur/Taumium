@@ -16,6 +16,10 @@ def index():
 def wallet_send():
     return flask.send_from_directory('wallet', 'send.html')
 
+@app.route('/mine')
+def mine():
+    blockchain.mine_latest_block()
+    return 'Block successfully mined'
 
 @app.route('/transaction/new', methods=['POST'])
 def new_transaction():
