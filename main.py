@@ -38,6 +38,9 @@ def new_transaction():
 
     return flask.jsonify(response), 201
 
+@app.route('/transaction/total')
+def total_amount():
+    return str(blockchain.total_amount())
 
 @app.route('/transaction/pending')
 def transactions_pending():

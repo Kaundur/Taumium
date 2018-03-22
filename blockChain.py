@@ -24,6 +24,16 @@ class BlockChain:
         self.transactions.append(transaction.Transaction(sender, recipient, amount))
         return len(self.chain)
 
+    def total_amount(self):
+        amount = 0
+        for t in self.transactions:
+            amount += int(t['amount'])
+
+        return amount
+
+    def pending_transactions(self):
+        return self.transactions
+
     def mine_latest_block(self):
 
         latest_block = self.last_block()
