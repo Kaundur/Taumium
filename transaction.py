@@ -1,3 +1,4 @@
+import json
 
 
 class Transaction:
@@ -9,3 +10,11 @@ class Transaction:
     def __repr__(self):
         return f'Sender: {self.sender} Recipient: {self.recipient} Amount: {self.amount}'
 
+    def get_transaction_json(self):
+        hashable_dict = {
+            'sender': self.sender,
+            'recipient': self.recipient,
+            'amount': self.amount
+        }
+
+        return json.dumps(hashable_dict, sort_keys=True)

@@ -1,4 +1,3 @@
-import time
 import json
 import hashlib
 
@@ -12,13 +11,19 @@ class Block:
         self.previous_hash = previous_hash
 
     def block_to_json(self):
+        # transactions are objects so need another stage of dumping
+        json_transactions = []
+        for transaction in self.transactions:
+            json_transactions.append(transaction.get_transaction_json())
+
         hashable_dict = {
             'block_index': self.block_index,
             'timestamp': self.timestamp,
-            'transactions': self.transactions,
+            'transactions': json_transactions,
             'proof': self.proof,
             'previous_hash': self.previous_hash
         }
+
         block_json = json.dumps(hashable_dict, sort_keys=True).encode()
         return block_json
 
