@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Transactions</title>
+</head>
+<body>
+    <div><B>Pending Transactions: {{ pending_transactions|length }}</B></div>
+    <div>
+        {% for transaction in pending_transactions %}
+            <div>{{ transaction }}</div>
+        {% endfor %}
+    </div>
+</body>
+</html>

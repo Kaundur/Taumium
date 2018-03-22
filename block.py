@@ -4,13 +4,12 @@ import hashlib
 
 
 class Block:
-    def __init__(self, transactions, block_index, previous_hash):
+    def __init__(self, transactions, block_index, previous_hash, proof):
         self.block_index = block_index
         self.timestamp = time.time()
         self.transactions = transactions
-        self.proof = None
+        self.proof = proof
         self.previous_hash = previous_hash
-        self._hash = self.hash_block()
 
     def block_to_json(self):
         hashable_dict = {
@@ -28,4 +27,27 @@ class Block:
         return hashlib.sha256(block_json).hexdigest()
 
     def __repr__(self):
-        return '<Block %s> : %s' % (self.block_index, self._hash)
+        return '<Block %s : Previous hash: %s>' % (self.block_index, self.previous_hash)
+
+    @staticmethod
+    def valid_proof(last_proof, proof, last_hash):
+        guess = f'{last_proof}{proof}{last_hash}'.encode()
+        guess_hash = hashlib.sha256(guess).hexdigest()
+        return guess_hash[:4] == '0000'
+
+    def mine_block(self):
+        last_proof = self.proof
+        last_hash = self.previous_hash
+
+        # Simple proof of work algorithm
+        proof = 0
+        while not self.valid_proof(last_proof, proof, last_hash):
+            proof += 1
+
+        return proof
+
+    @staticmethod
+    def valid_proof(last_proof, proof, last_hash):
+        guess = f'{last_proof}{proof}{last_hash}'.encode()
+        guess_hash = hashlib.sha256(guess).hexdigest()
+        return guess_hash[:4] == '0000'

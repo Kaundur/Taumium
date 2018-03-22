@@ -17,6 +17,12 @@ def wallet_send():
     return flask.send_from_directory('wallet', 'send.html')
 
 
+@app.route('/mine')
+def mine():
+    blockchain.mine_latest_block()
+    return 'Block successfully mined'
+
+
 @app.route('/transaction/new', methods=['POST'])
 def new_transaction():
     values = flask.request.form
@@ -29,11 +35,17 @@ def new_transaction():
     block_index = blockchain.add_transaction(values['sender'], values['recipient'], values['amount'])
 
     response = {'message': 'Transaction will be added to <Block %s>' % block_index}
+
     return flask.jsonify(response), 201
 
 @app.route('/transaction/total')
 def total_amount():
     return str(blockchain.total_amount())
+
+@app.route('/transaction/pending')
+def transactions_pending():
+    return flask.render_template('pending_transactions.html', pending_transactions=blockchain.pending_transactions())
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

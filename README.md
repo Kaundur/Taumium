@@ -1,26 +1,21 @@
-# Taumium
-An experiment in cryptocurrency
 
-# TODO
-## Block
-* API to view block
+```
+ _______ _______ _     _ _______ _____ _     _ _______
+    |    |_____| |     | |  |  |   |   |     | |  |  |
+    |    |     | |_____| |  |  | __|__ |_____| |  |  |
+```
+#### An experiment in cryptocurrency
 
-## Chain
-* API endpoint returning amount of currency in wallet
 
-## Mining
-* Node endpoint, later should be stand alone app
-* pow 
-    
-## Wallet
-* Interacts with the blockchain API
-* Public private key
-* Key generation
-* Should be individual app
-    
-## Nodes 
-* Register nodes
-* List of default node addresses
-* Node discovery  
-* Consensus 
+## Endpoints
 
+ 
+### Wallet
+* /wallet/send - HTML to send currency on the chain
+
+### Mine
+* /mine - Invoke mining on the current block
+
+### Transactions
+* /transaction/new - Post new transaction to the chain, can be invoked through the wallet endpoint wallet/send
+* /transaction/pending - View the current pending transactions
