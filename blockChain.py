@@ -60,10 +60,8 @@ class BlockChain:
         # For now return 1, later this should scale to the size of the chain
         return 1
 
-    def pending_transactions(self):
-        return self.transactions
-
-    def validate_chain(self, chain):
+    @staticmethod
+    def validate_chain(chain):
         last_block = chain[0]
         for _block in chain[1:]:
             if _block.previous_hash != last_block.hash_block():

@@ -1,5 +1,6 @@
 import json
 import hashlib
+import time
 
 
 class Block:
@@ -50,9 +51,3 @@ class Block:
             proof += 1
 
         return proof
-
-    @staticmethod
-    def valid_proof(last_proof, proof, last_hash):
-        guess = f'{last_proof}{proof}{last_hash}'.encode()
-        guess_hash = hashlib.sha256(guess).hexdigest()
-        return guess_hash[:4] == '0000'
