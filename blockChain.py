@@ -52,3 +52,16 @@ class BlockChain:
 
     def pending_transactions(self):
         return self.transactions
+
+    def validate_chain(self, chain):
+        last_block = chain[0]
+        for _block in chain[1:]:
+            if _block.previous_hash != last_block.hash_block():
+                return False
+
+            if not _block.valid_proof(last_block.proof, _block.proof, last_block.previous_hash):
+                return False
+
+            last_block = _block
+
+        return True

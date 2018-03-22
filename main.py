@@ -44,5 +44,12 @@ def transactions_pending():
     return flask.render_template('pending_transactions.html', pending_transactions=blockchain.pending_transactions())
 
 
+@app.route('/blockchain/validate')
+def validate_chain():
+    is_valid = blockchain.validate_chain(blockchain.chain)
+
+    return str(is_valid)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
