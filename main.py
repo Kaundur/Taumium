@@ -14,7 +14,7 @@ def index():
 
 @app.route('/wallet/send')
 def wallet_send():
-    return flask.send_from_directory('wallet', 'send.html')
+    return flask.render_template('send_taumium.html')
 
 
 @app.route('/mine')
