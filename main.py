@@ -56,5 +56,10 @@ def validate_chain():
     return str(is_valid)
 
 
+@app.route('/blockchain/history')
+def blockchain_history():
+    return flask.render_template('blockchain_history.html', blocks=blockchain.chain)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

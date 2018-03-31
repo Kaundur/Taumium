@@ -1,0 +1,20 @@
+.history-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #cecece;
+}
+
+.history-subtitle {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.history-block {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #cecece;
+}
+
+.history-transactions-section {
+    margin-left: 20px;
+}

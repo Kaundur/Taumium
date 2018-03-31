@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="history-title">Total Blocks: {{ blocks|length }}</div>
+    <div>
+        {% for block in blocks %}
+            <div class="history-block">
+                <div>Index: {{ block.block_index }}</div>
+                <div>Timestamp: {{ block.timestamp }}</div>
+                <div>Proof: {{ block.proof }}</div>
+                <div>Previous hash: {{ block.previous_hash }}</div>
+                <div class="history-subtitle">Transactions</div>
+                <div class="history-transactions-section">
+                    {% for transaction in block.transactions %}
+                        <div>{{ transaction }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
