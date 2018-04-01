@@ -13,7 +13,8 @@
                 <div>Index: {{ block.block_index }}</div>
                 <div>Timestamp: {{ block.timestamp }}</div>
                 <div>Proof: {{ block.proof }}</div>
-                <div>Previous hash: {{ block.previous_hash }}</div>
+                <div>Previous block hash: {{ block.previous_hash }}</div>
+                <div>Current block hash: {{ block.block_hash }}</div>
                 <div class="history-subtitle">Transactions</div>
                 <div class="history-transactions-section">
                     {% for transaction in block.transactions %}

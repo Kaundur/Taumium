@@ -1,8 +1,12 @@
 import block
 import transaction
 
+import time
+
 
 class BlockChain:
+    MAX_TRANSACTIONS_PER_BLOCK = 2
+
     def __init__(self):
         self.chain = []
         self.transactions = []
@@ -34,27 +38,48 @@ class BlockChain:
     def pending_transactions(self):
         return self.transactions
 
-    def mine_latest_block(self):
+    def get_next_unconfirmed_transaction(self):
+        if len(self.transactions) > 0:
+            return self.transactions.pop(0)
+        return None
+
+    def mine(self, mining_reward_address):
+
+        # Generate a list of transactions to be mined
+        mineable_transactions = []
+        for i in range(self.MAX_TRANSACTIONS_PER_BLOCK):
+            unconfirmed_transaction = self.get_next_unconfirmed_transaction()
+            if unconfirmed_transaction is None:
+                break
+
+            mineable_transactions.append(unconfirmed_transaction)
 
         latest_block = self.last_block()
 
-        # Mine the current block
-        proof = latest_block.mine_block()
-
-        # Send mining reward to the miner
+        # Calculate the reward amount for mining the block
         mining_reward_amount = self.calculate_mining_reward_amount()
 
-        # Hardcode sender and recipient for now
+        # Hardcode sender for now
         sender = 0
-        recipient = 0
 
-        self.add_transaction(sender, recipient, mining_reward_amount)
+        # Add the mining reward to the block transactions
+        mineable_transactions.append(transaction.Transaction(sender, mining_reward_address, mining_reward_amount))
 
         # Get the hash of the current block
-        previous_block_hash = latest_block.hash_block()
+        previous_block_hash = latest_block.block_hash
+
+        block_index = latest_block.block_index + 1
 
         # Create the new block
-        self.new_block(len(self.chain), previous_block_hash, proof)
+        new_block = block.Block(mineable_transactions, block_index, previous_block_hash, time.time())
+
+        # Now mine the new block
+        # TODO - Here we need to monitor the chain to see if someone has beat us to a solution.
+        # TODO - In this case we need to stop mining and start with a new block with a fresh list of transactions
+        new_block.mine_block()
+
+        # Once the block is mined, append it to the chain
+        self.chain.append(new_block)
 
     def calculate_mining_reward_amount(self):
         # For now return 1, later this should scale to the size of the chain

@@ -19,7 +19,9 @@ def wallet_send():
 
 @app.route('/mine')
 def mine():
-    blockchain.mine_latest_block()
+    # This should be set by the miner
+    hardcoded_mining_address = 99
+    blockchain.mine(hardcoded_mining_address)
     return 'Block successfully mined'
 
 
