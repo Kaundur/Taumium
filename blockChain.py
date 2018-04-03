@@ -12,16 +12,28 @@ class BlockChain:
         self.transactions = []
 
         # Create genesis block
-        self.new_block(0, '999', 999)
+        self.create_genesis_block()
+        # self.new_block(0, '999', 999)
+
+    def create_genesis_block(self):
+        # Sender, recipient, amount
+        # Should change the recipient to a real hash once we have the key generation sorted
+        first_genesis_transaction = transaction.Transaction(0, 1, 1000)
+        second_genesis_transaction = transaction.Transaction(0, 2, 1000)
+
+        genesis_transactions = [first_genesis_transaction, second_genesis_transaction]
+
+        # transactions, block index, previous hash, timestamp
+        genesis_block = block.Block(genesis_transactions, 0, "", time.time())
+        self.add_block(genesis_block)
 
     def last_block(self):
         return self.chain[-1]
 
-    def new_block(self, block_index, previous_hash, proof):
-        self.chain.append(block.Block(self.transactions, block_index, previous_hash, proof))
-        self.transactions = []
-
-        print('New block created')
+    def add_block(self, unvalidated_block):
+        # should validate block here before adding
+        self.chain.append(unvalidated_block)
+        print('Unvalidated block added to chain')
         print(self.last_block())
 
     def add_transaction(self, sender, recipient, amount):
