@@ -11,15 +11,28 @@ class BlockChain:
         self.chain = []
         self.transactions = []
 
-        # Create genesis block
+        # Genesis public/private key
+        self.GENESIS_PRIVATE_KEY = '5830bbebd544cbaddbe31c49d3523a73fee1e0a87af947a5ad9b975e475ae7ca'
+        self.GENESIS_PUBLIC_KEY = '74b2308becf58ac369ee3151a00a507eb7053cd13211a827304fd6e42239a89e2db0630ab2deea6a1b8c9f41f19c2e608df999b4b8731844e0b59d4e283bde55'
+
+        # Address for the first transaction within the genesis block
+        self.GENESIS_RECEIVER_PRIVATE_KEY = 'ce994e2a58ace792bcd84eb63f95ddb98f4d847f84cd28c788a9cdf40d01fd06'
+        self.GENESIS_RECEIVER_PUBLIC_KEY = '579606838945e81e2baba18df15c5d528c351264ff1c21c9e758af1d21f46db29fb412f5a47ed362b22718da1b33602c830846d98da2a6731467bc82b2eefa91'
+
+        # Address for where the mining reward is sent from
+        self.MINING_REWARD_PRIVATE_KEY = '5d053da3afeb03ae870fffe768c3021f1ca991ed1f2a3b284408551447351d57'
+        self.MINING_REWARD_PUBLIC_KEY = 'b0a552176531384a06105dfd6b3d137ccd283abe2f128bc32eb552bff45994bf9ab0767fc4d9cc463d47a1f28b00c4a36483f6f7add021e3313302779d0e63c4'
+
+        # Create genesis block receiver
         self.create_genesis_block()
-        # self.new_block(0, '999', 999)
 
     def create_genesis_block(self):
         # Sender, recipient, amount
         # Should change the recipient to a real hash once we have the key generation sorted
-        first_genesis_transaction = transaction.Transaction(0, 1, 1000)
-        second_genesis_transaction = transaction.Transaction(0, 2, 1000)
+        first_genesis_transaction = transaction.Transaction(self.GENESIS_PUBLIC_KEY, self.GENESIS_RECEIVER_PUBLIC_KEY, 1000)
+        first_genesis_transaction.sign_transaction(self.GENESIS_PRIVATE_KEY)
+        second_genesis_transaction = transaction.Transaction(self.GENESIS_PUBLIC_KEY, self.GENESIS_RECEIVER_PUBLIC_KEY, 1000)
+        second_genesis_transaction.sign_transaction(self.GENESIS_PRIVATE_KEY)
 
         genesis_transactions = [first_genesis_transaction, second_genesis_transaction]
 
@@ -36,9 +49,12 @@ class BlockChain:
         print('Unvalidated block added to chain')
         print(self.last_block())
 
-    def add_transaction(self, sender, recipient, amount):
-        self.transactions.append(transaction.Transaction(sender, recipient, amount))
-        return len(self.chain)
+    def add_transaction(self, transaction_obj):
+        # Only add the transaction if its digital signature is valid
+        if transaction_obj.is_valid():
+            self.transactions.append(transaction_obj)
+            return True
+        return False
 
     def total_amount(self):
         amount = 0
@@ -71,11 +87,12 @@ class BlockChain:
         # Calculate the reward amount for mining the block
         mining_reward_amount = self.calculate_mining_reward_amount()
 
-        # Hardcode sender for now
-        sender = 0
-
         # Add the mining reward to the block transactions
-        mineable_transactions.append(transaction.Transaction(sender, mining_reward_address, mining_reward_amount))
+        mining_reward_transaction = transaction.Transaction(self.MINING_REWARD_PUBLIC_KEY, mining_reward_address, mining_reward_amount)
+        mining_reward_transaction.sign_transaction(self.MINING_REWARD_PRIVATE_KEY)
+
+        # mining_reward_transaction.sign_transaction()
+        mineable_transactions.append(mining_reward_transaction)
 
         # Get the hash of the current block
         previous_block_hash = latest_block.block_hash

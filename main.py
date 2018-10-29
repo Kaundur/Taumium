@@ -1,11 +1,16 @@
-import flask
 
+import flask
 import blockChain
+
+import transaction
+
 
 app = flask.Flask(__name__)
 
 blockchain = blockChain.BlockChain()
 
+# Note, here we host both the wallet and server, this should be separate otherwise
+# we will compromise our private key on transaction
 
 @app.route('/')
 def index():
@@ -27,17 +32,25 @@ def mine():
 
 @app.route('/transaction/new', methods=['POST'])
 def new_transaction():
-    values = flask.request.form
+    # Note - private keys should never be sent to a server. However, in this demo it is convenient to host the wallet
+    # and node in the same place
 
+    values = flask.request.form
     # Check the values are in the post data
-    required = ['sender', 'recipient', 'amount']
+    required = ['sender', 'recipient', 'amount', 'private_key']
     if not all(k in values for k in required):
         return 'Missing values', 400
 
-    block_index = blockchain.add_transaction(values['sender'], values['recipient'], values['amount'])
+    # sign_transaction(values['private_key'])
+    t = transaction.Transaction(values['sender'], values['recipient'], values['amount'])
+    t.sign_transaction(values['private_key'])
 
-    response = {'message': 'Transaction will be added to <Block %s>' % block_index}
+    block_added = blockchain.add_transaction(t)
+    if block_added:
+        response = {'message': 'Transaction has been added to the minable transaction list'}
+        return flask.jsonify(response), 201
 
+    response = {'message': 'Invalid public private key combination'}
     return flask.jsonify(response), 201
 
 
