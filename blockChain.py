@@ -56,11 +56,27 @@ class BlockChain:
             return True
         return False
 
-    def total_amount(self):
+    def address_amount(self, address):
+        # Look at all historic transactions
         amount = 0
-        for t in self.transactions:
-            amount += int(t['amount'])
+        for element in self.chain:
+            for t in element.transactions:
+                # Add/Subtract the amount the address has received/sent
+                if t.recipient == address:
+                    amount += int(t.amount)
+                elif t.sender == address:
+                    amount -= int(t.amount)
+        return amount
 
+    def address_pending_amount(self, address):
+        amount = 0
+        # Look at pending transactions
+        for t in self.transactions:
+            # Add/Subtract the amount the address has received/sent
+            if t.recipient == address:
+                amount += int(t.amount)
+            elif t.sender == address:
+                amount -= int(t.amount)
         return amount
 
     def pending_transactions(self):

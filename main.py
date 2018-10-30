@@ -54,9 +54,23 @@ def new_transaction():
     return flask.jsonify(response), 201
 
 
-@app.route('/transaction/total')
-def total_amount():
-    return str(blockchain.total_amount())
+@app.route('/transaction/address_amount', methods=['GET', 'POST'])
+def address_amount():
+
+    address = ''
+    confirmed_amount = 0
+    pending_amount = 0
+
+    values = flask.request.form
+    if 'address' in values:
+        address = values['address']
+        confirmed_amount = blockchain.address_amount(address)
+        pending_amount = blockchain.address_pending_amount(address)
+
+    return flask.render_template('address_amount.html',
+                                 address=address,
+                                 confirmed_amount=confirmed_amount,
+                                 pending_amount=pending_amount)
 
 
 @app.route('/transaction/pending')

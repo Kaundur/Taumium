@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div>Address: {{ address }}</div>
+    <div>Confirmed amount: {{ confirmed_amount}}</div>
+    <div>Pending amount: {{ pending_amount }}</div>
+    <div>
+        <form action="/transaction/address_amount" method="post">
+            Address: <input type="text" name="address" value="579606838945e81e2baba18df15c5d528c351264ff1c21c9e758af1d21f46db29fb412f5a47ed362b22718da1b33602c830846d98da2a6731467bc82b2eefa91"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+</body>
+</html>
